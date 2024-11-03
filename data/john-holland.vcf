@@ -5,13 +5,13 @@ TEL;type=WORK:+1 (646) 215-7038
 KIND:individual
 NOTE:L&D professional with Doctors Without Borders
 ORG:MSF;Doctors Without Borders;PMU
-ROLE:Learning Officer
-TITLE:Learning Officer
-SOURCE:https://www.jon-dutch.com/contact.vcf
+ROLE:Learning Innovation and Technology Officer
+TITLE:Learning Innovation and Technology Officer
+SOURCE:https://www.wow-programs.org/john-holland.vcf
 ADR;type=WORK:;;40 Rector Street 16th Floor;New_York;NY;10016;USA
 CATEGORIES:L&D,MSF,Doctors_Without_Borders
-PHOTO;JPEG:https://raw.githubusercontent.com/jon-dutch/jon-dutch.github.io/f91dbe0753bf464d1ea738ecad0e05682c898d26/images/me-web.svg
-LOGO;JPEG:https://www.doctorswithoutborders.org/themes/custom/msf/logo.svg
+PHOTO;JPEG:https://www.wow-programs.org/images/me.jpg
+LOGO;JPEG:https://www.wow-programs.org/images/MSF.jpg
 TZ:America/New_York
 URL:https://www.doctorswithoutborders.org
 FN:John Holland
