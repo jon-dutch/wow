@@ -88,7 +88,7 @@
 								<a class="button icon primary solid fa-envelope" href="#message">Message</a>
 							</div>
 							<h2 class="major">Message</h2>
-							<form name="contact" method="POST" data-netlify="true" netlify-honeypot="bot-field">
+							<form name="jh-contact" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="#thank-you">
 								<!-- Hidden field for bot detection -->
 								<div class="hidden">
 									<label>Don't fill this out if you're human: <input name="bot-field" /></label>
@@ -112,6 +112,10 @@
 									<li><input type="reset" value="Reset" class="button" /></li>
 								</ul>
 							</form>
+						</article>
+						<article id="thank-you">
+							<h2 class="major">contact</h2>
+							<p>Your form has been successfully submitted!</p>
 						</article>
 					</div>
 				<!-- Footer -->
