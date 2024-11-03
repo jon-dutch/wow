@@ -2,23 +2,20 @@
 
 class PageManager {
     constructor() {
-        // Debug log to verify initialization
         console.log('PageManager initializing...');
-        
         this.overlayContainer = null;
+        this.loadedScripts = new Set();
         this.setupOverlayContainer();
         this.setupEventListeners();
         this.checkInitialHash();
     }
 
     setupOverlayContainer() {
-        // Create overlay container if it doesn't exist
         if (!this.overlayContainer) {
             this.overlayContainer = document.createElement('div');
             this.overlayContainer.id = 'page-overlay';
             this.overlayContainer.style.display = 'none';
             
-            // Add styles
             const style = document.createElement('style');
             style.textContent = `
                 #page-overlay {
@@ -76,10 +73,7 @@ class PageManager {
     }
 
     setupEventListeners() {
-        // Debug log
         console.log('Setting up event listeners...');
-
-        // Listen for contact button clicks
         document.addEventListener('click', (e) => {
             if (e.target.matches('.contact-button')) {
                 console.log('Contact button clicked:', e.target);
@@ -89,7 +83,6 @@ class PageManager {
             }
         });
 
-        // Handle browser back/forward
         window.addEventListener('popstate', (e) => {
             console.log('Popstate event:', e.state);
             if (e.state && e.state.pageId) {
@@ -108,6 +101,29 @@ class PageManager {
         }
     }
 
+    async loadScript(src) {
+        if (this.loadedScripts.has(src)) {
+            console.log('Script already loaded:', src);
+            return Promise.resolve();
+        }
+
+        return new Promise((resolve, reject) => {
+            const script = document.createElement('script');
+            script.src = src;
+            script.async = true;
+            script.onload = () => {
+                console.log('Script loaded:', src);
+                this.loadedScripts.add(src);
+                resolve();
+            };
+            script.onerror = () => {
+                console.error('Script failed to load:', src);
+                reject(new Error(`Failed to load script: ${src}`));
+            };
+            document.body.appendChild(script);
+        });
+    }
+
     async loadPage(pageId, isPopState = false) {
         console.log('Loading page:', pageId);
         try {
@@ -115,6 +131,14 @@ class PageManager {
             this.overlayContainer.innerHTML = '<div id="overlay-loader">Loading...</div>';
             this.overlayContainer.style.display = 'block';
             setTimeout(() => this.overlayContainer.classList.add('active'), 10);
+
+            // First, try to load required scripts
+            try {
+                await this.loadRequiredScripts();
+            } catch (error) {
+                console.error('Error loading scripts:', error);
+                // Continue loading the page even if scripts fail
+            }
 
             // Load page content
             const response = await fetch(`${pageId}.html`);
@@ -145,8 +169,14 @@ class PageManager {
                 window.history.pushState({ pageId }, '', `#${pageId}`);
             }
 
-            // Load and initialize required scripts
-            await this.loadPageScripts(pageId);
+            // Initialize the page if main.js is loaded
+            if (window.main && typeof window.main.init === 'function') {
+                try {
+                    window.main.init();
+                } catch (error) {
+                    console.error('Error initializing page:', error);
+                }
+            }
 
         } catch (error) {
             console.error('Error loading page:', error);
@@ -159,35 +189,17 @@ class PageManager {
         }
     }
 
-    async loadPageScripts(pageId) {
-        // Load required scripts for profile pages
+    async loadRequiredScripts() {
         const scripts = [
-            'assets/js/jquery.min.js',
-            'assets/js/browser.min.js',
-            'assets/js/breakpoint.min.js',
-            'assets/js/util.js',
-            'assets/js/main.js'
+            '/assets/js/jquery.min.js',
+            '/assets/js/browser.min.js',
+            '/assets/js/breakpoint.min.js',
+            '/assets/js/util.js',
+            '/assets/js/main.js'
         ];
 
-        for (const src of scripts) {
-            await new Promise((resolve, reject) => {
-                if (document.querySelector(`script[src="${src}"]`)) {
-                    resolve();
-                    return;
-                }
-
-                const script = document.createElement('script');
-                script.src = src;
-                script.onload = resolve;
-                script.onerror = reject;
-                document.body.appendChild(script);
-            });
-        }
-
-        // Initialize the loaded page
-        if (window.main && typeof window.main.init === 'function') {
-            window.main.init();
-        }
+        const loadPromises = scripts.map(src => this.loadScript(src));
+        await Promise.all(loadPromises);
     }
 
     hidePage(isPopState = false) {
