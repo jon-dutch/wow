@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', function() {
         overlay.style.display = 'none'; // Initially hidden
         overlay.innerHTML = `
             <div class="modal-content-banner">
-                <img class="dl-img" src="img/dl24.png" alt="DevLearn">
+                <img class="dl-img" src="../../images/site/dl24.png" alt="DevLearn">
                 <p>Hello fellow DevLearn attendees! Pleasure to make your acquaintance today. This page is a brief information page on MSF's work around the world, as well as our L&D specific efforts. To learn more about MSF/Doctors Without Borders, please use the button in the navigation bar to visit our official website.</p>
             </div>
         `;
