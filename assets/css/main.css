@@ -1722,7 +1722,7 @@ input, select, textarea {
 }
 
 .contact-card i {
-	padding-right: 0.5rem;
+	padding-right: 1rem;
 }
 
 @media screen and (max-width: 736px) {
