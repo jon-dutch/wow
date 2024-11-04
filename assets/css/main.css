@@ -1717,6 +1717,10 @@ input, select, textarea {
     display: none;
 }
 
+.contact-card p {
+	margin: 0;
+}
+
 @media screen and (max-width: 736px) {
     .x-button {
         top: 1rem;
