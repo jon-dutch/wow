@@ -1721,6 +1721,10 @@ input, select, textarea {
 	margin: 0;
 }
 
+.contact-card i {
+	padding-right: 0.5rem;
+}
+
 @media screen and (max-width: 736px) {
     .x-button {
         top: 1rem;
